@@ -48,10 +48,9 @@ const generateMetadata = (_dna, _edition, _attributesList) => {
   let dateTime = Date.now();
   let tempMetadata = {
     dna: _dna.join(""),
-    name: `#${_edition}`,
+    name: `${_edition}`,
     description: description,
     image: `${baseImageUri}/${_edition}`,
-    edition: _edition,
     date: dateTime,
     attributes: _attributesList,
   };
@@ -61,8 +60,10 @@ const generateMetadata = (_dna, _edition, _attributesList) => {
 // prepare attributes for the given element to be used as metadata
 const getAttributeForElement = (_element) => {
   let selectedElement = _element.layer.selectedElement;
+  console.log(selectedElement)
   let attribute = {
-    name: selectedElement.name,
+    value: selectedElement.name,
+    trait_type: selectedElement.trait_type,
     rarity: selectedElement.rarity,
   };
   return attribute;
@@ -97,7 +98,7 @@ const constructLayerToDna = (_dna = [], _layers = [], _rarity) => {
       location: layer.location,
       position: layer.position,
       size: layer.size,
-      selectedElement: {...selectedElement, rarity: _rarity },
+      selectedElement: {...selectedElement, rarity: _rarity, trait_type: _layers.find(layer => selectedElement.path.includes(layer.id)).id, },
     };
   });
   return mappedDnaToLayers;
